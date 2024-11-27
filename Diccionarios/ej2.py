@@ -1,62 +1,108 @@
 
 # Declaracion del diccionario
 dicTelefonos= {
-    "ANA": "555-123-4567",
-    "CARLOS": "555-234-5678",
-    "BEA": "555-345-6789",
-    "DAVID": "555-456-7890",
-    "ELENA": "555-567-8901",
-    "FRANCISCO": "555-678-9012",
-    "GABRIELA": "555-789-0123",
-    "HECTOR": "555-890-1234",
-    "ISA": "555-901-2345",
-    "JAVI": "555-012-3456",
+    "ANA": "555123456",
+    "CARLOS": "555234567",
+    "BEA": "555345678",
+    "DAVID": "555456789",
+    "ELENA": "555567890",
+    "FRANCISCO": "555678901",
+    "GABRIELA": "555789012",
+    "HECTOR": "555890123",
+    "ISA": "555901234",
+    "JAVI": "555012345",
 }
 
-# Funcion que imprime el diccionario
-def mostrarDefecto():
-    print("\nDiccionario con los numeros en orden de introduccion")
-    print("LISTADO POR DEFECTO")
-    for nombre,numero in dicTelefonos:
-        print(f"Nombre: {nombre}____Telefono: {numero}")
+# Funcion que devuelve el contacto, toma un nombre y lo devuelve
+def existeContacto(nombre):
+    return nombre.strip().upper() in dicTelefonos
 
-# Funcion que ordena el diccionario y lo muestra
-def mostrarAlfabetico():
-    # dicOrdenado=dict(sorted(dicTelefonos.items(), key=lambda item:item[0]))
-    dicOrdenado=dicTelefonos.sort()
-    print("LISTADO ORDENADO")
-    for nombre, numero in dicOrdenado:
-        print(f"Nombre: {nombre}____Telefono: {numero}")
+# Funcion que actualiza el diccionario, toma los datos de un contacto y le cambia el nombre
+def actualizarDiccionario(nombre, telefono):
+    dicTelefonos[nombre.strip().upper()]=telefono
 
-# Funcion para añadir el nuevo contacto
-def aniadirContacto():
-    nombre=input("Introduce el nombre del contacto")
-    nombre=nombre.upper()
-    num = input("Introduce el numero del contacto")
-    if nombre in dicTelefonos.keys():
-        print("El contacto ya esta guardado")
-    else:
-        dicTelefonos[nombre]=num
+# Funcion para borrar un contacto por nombre
+def borrarContacto(nombre):
+    dicTelefonos.pop(nombre.strip().upper(), None)
 
-
-
-# Funcion para cambiar el numero
-def cambiarNum():
-    nombre=input("Introduce el nombre del contacto: \n")
-    nombre=nombre.upper()
+# Funcion para imprimir el contacto por nombre
+def imprimirContacto(nombre):
     if nombre in dicTelefonos:
-        print(f"{dicTelefonos[nombre]} es el numero a cambiar")
-        num=input("Introduce el nuevo numero \n")
-        dicTelefonos[nombre]=num
-        print(f"{dicTelefonos[nombre]} es nuevo numero")
+        print("{}-{}".format(nombre, dicTelefonos[nombre]))
 
-# Funcion para buscar un numero de telefono
-def buscarNum():
-    num=input("Introduce el numero a buscar \n")
-    if num in dicTelefonos.values():
-        for key, numero in dicTelefonos:
-            if 
+# Funcion para imprimir el listado
+def mostrarListado(ordenado = False):
+    # Creamos una lista con los nombres
+    nombres = list(dicTelefonos.keys())
+    if ordenado:
+        nombres.sort()
+    print("\nDiccionario con los numeros en orden de introduccion")
+    print("==LISTADO POR DEFECTO==")
+    # Y los imprimimos
+    for n in nombres:
+        imprimirContacto(n)        
+    print("==FIN DEL LISTADO==")
 
+# Funcion que introduce un contacto
+def nuevoContacto():
+    nombre = input("Nombre: ")
+    numero = input("Numero: ")
+
+    if not existeContacto(nombre):
+        actualizarDiccionario(nombre, numero)
+    else:
+        if(input("El contacto {} ya existe\nQuieres modificarlo? (S/N)\n".format(nombre)).upper())=="S":
+            actualizarDiccionario(nombre,numero)
+            print("Contacto modificado:")
+            imprimirContacto(nombre)
+
+# Funcion para modificar el contacto
+def modificarContacto():
+    nombre = input("Nombre: ")
+    existe=True
+    actualizar=True
+    if not existeContacto(nombre):
+        existe=False
+        actualizar = (input("El contacto {} no existe. ¿Desea añadirlo(S/N)?: ".format(nombre)).upper() == "S")
+
+    if actualizar:
+        numero = input("Numero: ")
+        actualizarDiccionario(nombre, numero)
+
+        if existe:
+            print("Contacto Modificado")
+            imprimirContacto(nombre)
+        else:
+            print("Contacto añadido")
+            imprimirContacto(nombre)
+
+
+# Funcion para buscar por telefono
+def buscarTelefono():
+    num = input("Introduce el numero a buscar: ")
+    existe = False
+    for n in dicTelefonos.items():
+        if n[1]==num:
+            print("El numero {} es del contacto {}.".format(num, n[0]))
+            existe = True
+            break
+    if not existe:
+        print("El telefono {} no se ha encontrado".format(num))
+
+# Funcion para eliminar un contacto
+def eliminarContacto():
+    nombre = input("Introduce el nombre del contacto a eliminar: ")
+    if not existeContacto(nombre):
+        print("El contacto {} no existe".format(nombre))
+    else:
+        if input("El contacto {} va a ser borrado.\n Quieres continuar?\n (S/N)".format(nombre)).upper=="S":
+            borrarContacto(nombre)
+            print("Contacto eliminado")
+
+# Funcion para borrar el listin
+def borrarDiccionario():
+    if input("ATENCION!\n Se van a borrar todos los numeros\nQuieres continuar?\n(S/N)").upper() == "S":
+        dicTelefonos.clear()
 
 # El menu
 def menu():
@@ -75,19 +121,19 @@ def menu():
         opcion = input("\nSelecciona una opcion: ").lower()
 
         if opcion == 'a':
-            mostrarDefecto()
+            mostrarListado()
         elif opcion == 'b':
-            mostrarAlfabetico()        
+            mostrarListado(ordenado = True)        
         elif opcion == 'c':
-            cambiarNum()
+            nuevoContacto()
         elif opcion == 'd':
-            buscarNum()        
+            modificarContacto()        
         elif opcion == 'e':
-            print("\nSaliendo del programa...")
+            buscarTelefono()
         elif opcion == 'f':
-            print("\nSaliendo del programa...")
+            eliminarContacto()
         elif opcion == 'g':
-            print("\nSaliendo del programa...")
+            borrarDiccionario()
         elif opcion == 'h':
             print("\nSaliendo del programa...")
             break
