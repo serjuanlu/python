@@ -129,33 +129,47 @@ OPCIONES DEL MENU
 def agregarMaterial():
     try:
         while True:
-            libroRevista=input("Elige el tipo de material\n1.Libro\n2.Revista\n")
-            if libroRevista=="1":
-                    print("Vamos a crear un libro: ")
-                    idLibro=input("Introduce el id del libro: ")
-                    titulo=input("Introduce el titulo del libro: ")
-                    autor=input("Introduce el autor del libro: ")
-                    anyoPub=input("Introduce el año de publicacion: ")
-                    genero=input("Introduce el genero del libro: ")
-                    paginas=int(input("Introduce las paginas del libro: "))
-                    libroCreado=Libro(idLibro,titulo,autor,anyoPub,genero,paginas)
+            libroRevista = input("Elige el tipo de material\n1. Libro\n2. Revista\n")
+            if libroRevista == "1":
+                print("Vamos a crear un libro: ")
+                idLibro = input("Introduce el ID del libro: ")
+                titulo = input("Introduce el título del libro: ")
+                autor = input("Introduce el autor del libro: ")
+                anyoPub = input("Introduce el año de publicación: ")
+                genero = input("Introduce el género del libro: ")
+                paginas = int(input("Introduce las páginas del libro: "))
+                
+                try:
+                    libroCreado = Libro(idLibro, titulo, autor, anyoPub, genero, paginas)
                     libroCreado.mostrar()
                     break
-            elif libroRevista=="2":
-                    print("Vamos a crear una revista")
-                    idRev=input("Introduce el id de la revista: ")
-                    titulo=input("Introduce el titulo de la revista: ")
-                    autor=input("Introduce el autor de la revista: ")
-                    anyoPub=input("Introduce el año de publicacion: ")
-                    mesPub=input("Introduce el mes de publicacion: ")
-                    numEd=input("Introduce el num de publicacion: ")
-                    revistaCreada=Revista(idRev, titulo, autor, anyoPub, mesPub, numEd)
+                except ValueError as ve:
+                    print(f"Error al crear el libro: {ve}")
+                    continue
+
+            elif libroRevista == "2":
+                print("Vamos a crear una revista")
+                idRev = input("Introduce el ID de la revista: ")
+                titulo = input("Introduce el título de la revista: ")
+                autor = input("Introduce el autor de la revista: ")
+                anyoPub = input("Introduce el año de publicación: ")
+                mesPub = input("Introduce el mes de publicación: ")
+                numEd = input("Introduce el número de edición: ")
+                
+                try:
+                    revistaCreada = Revista(idRev, titulo, autor, anyoPub, mesPub, numEd)
                     revistaCreada.mostrar()
                     break
+                except ValueError as ve:
+                    print(f"Error al crear la revista: {ve}")
+                    continue
+
             else:
-                    print("Por favor, introduce una opcion valida")
+                print("Por favor, introduce una opción válida.")
     except Exception as ex:
-        print(ex)
+        print(f"Error: {ex}")
+
+
             
 '''
 2.Listar Materiales: Muestra una lista de todos los materiales registrados con sus detalles. Elije la forma de presentación más adecuada para que el usuario lo vea claro.
