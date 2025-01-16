@@ -17,16 +17,20 @@ almacen = {}
 
 class Material:
     def __init__(self, id, titulo, autor, anyoPub):
-        if id not in listaId:
+        print(listaId)
+        print(id)
+        if id in listaId:
+            print("Error")
+            raise ValueError(f"El id {id} ya esta registrado")
+        else:
             self.id=id
             self.titulo=titulo
             self.autor=autor
             self.anyoPub=anyoPub
             #Lo guardamos en el almacen y la lista
             almacen[self.id]=self
-            listaId.append(id)
-        else:
-            raise ValueError(f"El id {id} ya esta registrado")
+            listaId.append(int(id))
+           
 
     def mostrar(self):
         print("Material")
@@ -57,6 +61,7 @@ class Libro(Material):
         super().mostrar()
         print(f"Genero {self.genero}")
         print(f"Paginas {self.paginas}")
+        
 '''
 Revista: Incluye atributos adicionales como número de edición y mes de publicación (debe seleccionarse entre los meses válidos: "Enero", "Febrero", ..., "Diciembre")
 '''
@@ -178,6 +183,7 @@ def listarMateriales():
     mostrados=list(almacen.values())
     for n in mostrados:
         if isinstance(n, Material):
+            print('-------------------')
             n.mostrar()
     
 '''
